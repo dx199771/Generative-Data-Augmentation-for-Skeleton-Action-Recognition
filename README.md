@@ -3,6 +3,7 @@
 # Code is coming in 2 days. #
 
 **Accepted at 20th IEEE International Conference on Automatic Face and Gesture Recognition (IEEE FG’26) as Oral Presentation.**
+
 [![Paper](https://img.shields.io/badge/Paper-IEEE%20FG%202026-blue)]([https://your-paper-link-here](https://arxiv.org/abs/2604.14933))
 [![Project Page](https://img.shields.io/badge/Page-ProjectPage-red)]([https://your-paper-link-here](https://andrewjohngilbert.github.io/SkelActRec/))
 
