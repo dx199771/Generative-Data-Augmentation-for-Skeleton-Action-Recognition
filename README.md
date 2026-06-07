@@ -19,11 +19,12 @@ With only a small set of labelled skeleton sequences, the model generates divers
 
 ## 🔧 Installation
 
-Python 3.8+ is required.
+Python 3.8+ and mmcv 1.7.1 are required.
 
 ```bash
 pip install torch torchvision
-pip install numpy tqdm timm mmcv
+pip install mmcv==1.7.1
+pip install numpy tqdm timm
 ```
 
 ---
