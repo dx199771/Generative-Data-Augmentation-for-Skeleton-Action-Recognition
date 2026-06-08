@@ -77,7 +77,7 @@ class VQMotionDataset(data.Dataset):
         self.lengths = []
 
         for split in ("train", "test"):
-            split_pkl = pjoin("./data", f"48_{split}.pkl")
+            split_pkl = pjoin("./data/humanact12", f"48_{split}.pkl")
             with open(split_pkl, "rb") as f:
                 split_idx = pkl.load(f)
 
@@ -146,7 +146,7 @@ class VQMotionDataset(data.Dataset):
         # Z-normalisation
         motion = (motion - self.mean) / self.std
 
-        return motion, label
+        return motion.astype(np.float32), label.astype(np.float32)
 
 
 # ------------------------------------------------------------------ #
