@@ -78,8 +78,8 @@ python3 main.py --config configs/nturgbvibe.py
 
 ---
 
-### Evaluation via PYSKL
-We utilise [PYSKL](https://github.com/kennymckormick/pyskl), a comprehensive PyTorch-based toolbox for skeleton-based action recognition, to evaluate our framework. Our generated synthetic data is trained and tested across four supported SOTA backbones within the PYSKL repository.
+### Evaluation framework
+To evaluate our framework, the generated synthetic data is trained and tested across the three standard SOTA backbones provided by [PYSKL](https://github.com/kennymckormick/pyskl), and [BlockGCN](https://github.com/zhouyuxuanyx/blockgcn) implemented as an independent baseline.
 
 
 ## 📜 Citation
