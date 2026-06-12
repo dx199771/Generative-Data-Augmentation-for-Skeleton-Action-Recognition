@@ -1262,7 +1262,6 @@ class GaussianDiffusion:
         terms = {}
 
 
-     
         model_output, loss = model(x_t, self._scale_timesteps(t),x_start=x_start,label=label) # 256, 25,3, 300
         
         terms["cls"] = loss

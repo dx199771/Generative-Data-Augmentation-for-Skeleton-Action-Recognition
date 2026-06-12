@@ -24,7 +24,8 @@ Python 3.8+ and mmcv 1.7.1 are required.
 ```bash
 pip install torch torchvision
 pip install mmcv==1.7.1
-pip install numpy tqdm timm
+# pip install numpy tqdm timm
+pip install -r requirements.txt
 ```
 
 ---
@@ -35,8 +36,8 @@ Download the datasets and place them under `data/`.
 
 | Dataset | Original Dataset | Our 263 Features|
 |---|---|---|
-| HumanAct12 | [Download]() | |
-| Refined NTU RGB+D | [Download]() | |
+| HumanAct12 | [Download]() | [Download](https://drive.google.com/file/d/1wWcDZ4Assjx4Mlh4L0P8c2632QZTKupu/view?usp=sharing) |
+| Refined NTU RGB+D | [Download]() | [Download](https://drive.google.com/file/d/1xdQdNKa8voIUwKDqIALdXufOuIyF__N-/view?usp=sharing) |
 
 Expected structure:
 
@@ -52,13 +53,28 @@ data/
 ## 🚀 Training
 
 ```bash
-# HumanAct12-22
+# HumanAct12
 python3 main.py --config configs/humanact1222.py
 
 # NTU RGB+D Vibe
 python3 main.py --config configs/nturgbvibe.py
 ```
 
+## Sampling
+
+# clone MDM first to use its recover_from_ric function
+```bash
+git clone https://github.com/GuyTevet/motion-diffusion-model.git
+```
+
+```bash
+# HumanAct12
+python3 sample.py --config configs/cfg_humanact.py 
+
+# NTU RGB+D Vibe
+python3 sample.py --config configs/cfg_nturgbvibe.py 
+
+```
 
 ---
 

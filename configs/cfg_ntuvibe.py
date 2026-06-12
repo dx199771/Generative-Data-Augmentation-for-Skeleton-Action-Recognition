@@ -6,7 +6,7 @@ seed = 2
 multi_gpu = "1"
 
 # --- Dataloader ---
-dataset_name = "nturgbd60_sub_vibe"
+dataset_name = "nturgbvibe"
 motion_base_path = "./data/ntuvibe"
 motion_path = "./data/ntuvibe/new_joint_vecs_vibe"
 train_stat = "./data/ntuvibe/vibe_48_new_train"
@@ -26,7 +26,7 @@ num_epoch = 1000
 lr = 1e-4
 lr_step_size = 200
 step = 10
-trainig = True
+training = True
 
 # --- Checkpoint ---
 load_from = ""
@@ -43,5 +43,8 @@ unit_length = 4
 bs_train = 128
 
 # --- Augmentation ---
-# aug = False
+aug = True
 # other_aug = True
+
+# --- Sampling ---
+num_frames = 48

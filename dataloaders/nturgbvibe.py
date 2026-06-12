@@ -30,12 +30,6 @@ ACTION_DICT = {
 LABEL_TO_IDX = {label: idx for idx, label in enumerate(ACTION_DICT.values())}
 NUM_CLASSES  = len(LABEL_TO_IDX)  # 13
 
-# Hardcoded data roots
-MOTION_DIR = "/mnt/welles/scratch/xu/HumanML3D/HumanML3D/new_joint_vecs_vibe"
-SPLIT_DIR  = "/mnt/welles/scratch/xu/HumanML3D/HumanML3D"
-TRAIN_STAT = pjoin(SPLIT_DIR, "vibe_48_new_train")
-TEST_STAT  = pjoin(SPLIT_DIR, "vibe_48_new_test")
-
 
 # ------------------------------------------------------------------ #
 # Helpers                                                              #
@@ -66,13 +60,13 @@ class VQMotionDataset(data.Dataset):
         self.lengths     = []
 
         for split in ("train", "test"):
-            split_pkl = pjoin(SPLIT_DIR, f"vibe_48_new_{split}.pkl")
+            split_pkl = pjoin(cfg.motion_base_path, f"vibe_48_new_{split}.pkl")
             with open(split_pkl, "rb") as f:
                 split_idx = pkl.load(f)
 
             data_list, labels, names = [], [], []
 
-            for path in [os.path.join(MOTION_DIR, i) for i in split_idx]:
+            for path in [os.path.join(cfg.motion_path, i) for i in split_idx]:
                 motion = np.load(path)
 
                 # Skip NaN or too-short sequences
@@ -104,10 +98,10 @@ class VQMotionDataset(data.Dataset):
                 self.test_name  = names
 
         # Load normalisation statistics
-        self.mean      = np.load(pjoin(TRAIN_STAT, "Mean.npy"))
-        self.std       = np.load(pjoin(TRAIN_STAT, "Std.npy"))
-        self.test_mean = np.load(pjoin(TEST_STAT,  "Mean.npy"))
-        self.test_std  = np.load(pjoin(TEST_STAT,  "Std.npy"))
+        self.mean      = np.load(pjoin(cfg.train_stat, "Mean.npy"))
+        self.std       = np.load(pjoin(cfg.train_stat, "Std.npy"))
+        self.test_mean = np.load(pjoin(cfg.test_stat,  "Mean.npy"))
+        self.test_std  = np.load(pjoin(cfg.test_stat,  "Std.npy"))
 
         print(f"Total training motions: {len(self.data)}")
 
@@ -136,7 +130,7 @@ class VQMotionDataset(data.Dataset):
         # Z-normalisation
         motion = (motion - self.mean) / self.std
 
-        return motion, label
+        return motion.astype(np.float32), label
 
 
 # ------------------------------------------------------------------ #

@@ -45,3 +45,6 @@ bs_train = 128
 # --- Augmentation ---
 aug = True
 # other_aug = True
+
+# --- Sampling ---
+num_frames = 48

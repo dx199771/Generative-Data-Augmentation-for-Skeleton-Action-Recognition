@@ -130,6 +130,9 @@ class CGN(nn.Module):
         if self.dropout_inf > 0:
             xseq = F.dropout(xseq, p=self.dropout_inf, training=True)
 
+        xseq = xseq.float()
+        emb  = emb.float()
+
         output = self.semantic_decoder(xseq, emb)[1:]
         output = self.output_process(output)
 

@@ -4,6 +4,9 @@ import random
 import numpy as np
 import argparse
 
+# ------------------------------------------------------------------ #
+# Basic Utils
+# ------------------------------------------------------------------ #
 
 def init_seed(args):
     """Set random seeds for reproducibility across Python, NumPy, and PyTorch."""
@@ -58,3 +61,39 @@ def parse_args():
         cfg.dropout_inf = args.dropout_inf
 
     return cfg
+
+
+# ------------------------------------------------------------------ #
+# Augmentation helpers                                                 #
+# ------------------------------------------------------------------ #
+
+def add_gaussian_noise(skeleton, mean=0.02, std=0.05):
+    """Add Gaussian noise to a skeleton sequence."""
+    return skeleton + np.random.normal(mean, std, skeleton.shape)
+
+
+def random_scaling(skeleton, scale_range=(1.2, 1.8)):
+    """Randomly scale a skeleton sequence."""
+    return skeleton * np.random.uniform(*scale_range)
+
+
+def random_rotation(skeleton, angle_range=(-5, 55)):
+    """Randomly rotate a skeleton sequence around a random axis."""
+    angle = np.radians(np.random.uniform(*angle_range))
+    axis  = np.random.choice(['x', 'y', 'z'])
+
+    if axis == 'x':
+        rot_mat = np.array([[1, 0, 0],
+                            [0, np.cos(angle), -np.sin(angle)],
+                            [0, np.sin(angle),  np.cos(angle)]])
+    elif axis == 'y':
+        rot_mat = np.array([[ np.cos(angle), 0, np.sin(angle)],
+                            [0, 1, 0],
+                            [-np.sin(angle), 0, np.cos(angle)]])
+    else:
+        rot_mat = np.array([[np.cos(angle), -np.sin(angle), 0],
+                            [np.sin(angle),  np.cos(angle), 0],
+                            [0, 0, 1]])
+
+    original_shape = skeleton.shape
+    return np.dot(skeleton.reshape(-1, 3), rot_mat.T).reshape(original_shape)

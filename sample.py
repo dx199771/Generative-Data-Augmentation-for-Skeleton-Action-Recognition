@@ -8,50 +8,10 @@ import torch
 import matplotlib.pyplot as plt
 
 import models
-from utils.utils import parse_args, init_gpu, init_seed
+from utils import *
 
-sys.path.append("/home/xu/project/conditon_skeleton_generation/motion-diffusion-model")
+# git clone https://github.com/GuyTevet/motion-diffusion-model.git
 from data_loaders.humanml.scripts.motion_process import recover_from_ric
-from dataloaders.nturgbvibe import label_to_idx  # last import wins for idx_to_label
-
-idx_to_label = {v: k for k, v in label_to_idx.items()}
-
-
-# ------------------------------------------------------------------ #
-# Augmentation helpers                                                 #
-# ------------------------------------------------------------------ #
-
-def add_gaussian_noise(skeleton, mean=0.02, std=0.05):
-    """Add Gaussian noise to a skeleton sequence."""
-    return skeleton + np.random.normal(mean, std, skeleton.shape)
-
-
-def random_scaling(skeleton, scale_range=(1.2, 1.8)):
-    """Randomly scale a skeleton sequence."""
-    return skeleton * np.random.uniform(*scale_range)
-
-
-def random_rotation(skeleton, angle_range=(-5, 55)):
-    """Randomly rotate a skeleton sequence around a random axis."""
-    angle = np.radians(np.random.uniform(*angle_range))
-    axis  = np.random.choice(['x', 'y', 'z'])
-
-    if axis == 'x':
-        rot_mat = np.array([[1, 0, 0],
-                            [0, np.cos(angle), -np.sin(angle)],
-                            [0, np.sin(angle),  np.cos(angle)]])
-    elif axis == 'y':
-        rot_mat = np.array([[ np.cos(angle), 0, np.sin(angle)],
-                            [0, 1, 0],
-                            [-np.sin(angle), 0, np.cos(angle)]])
-    else:
-        rot_mat = np.array([[np.cos(angle), -np.sin(angle), 0],
-                            [np.sin(angle),  np.cos(angle), 0],
-                            [0, 0, 1]])
-
-    original_shape = skeleton.shape
-    return np.dot(skeleton.reshape(-1, 3), rot_mat.T).reshape(original_shape)
-
 
 # ------------------------------------------------------------------ #
 # Main sampling loop                                                   #
@@ -66,9 +26,7 @@ def sample():
     if "nturgbvibe" in cfg.dataset_name:
         from dataloaders.nturgbvibe import get_dataset_loader
     elif "humanact12_22" in cfg.dataset_name:
-        from dataloaders.humanact12_22 import get_dataset_loader
-    else:
-        from dataloaders.pkummd import get_dataset_loader
+        from dataloaders.humanact12 import get_dataset_loader
 
     dataloader, dataset = get_dataset_loader(cfg=cfg)
     model, diffusion    = models.get_model(cfg)
@@ -81,7 +39,7 @@ def sample():
         )
     model.eval()
 
-    cfg.num_frames = 48
+    # How many times the data needs to be generated
     NN = 5
 
     out_data  = {"split": {"xsub_train": [], "xsub_val": []}, "annotations": []}
@@ -205,12 +163,12 @@ def sample():
     drop_str = str(int(cfg.dropout_inf * 10)).zfill(2)
 
     if not cfg.aug and not cfg.other_aug:
-        out_path = f'./data_humanact12/{cfg.dataset_name}_{sub_pct}.pkl'
+        out_path = f'./output/{cfg.dataset_name}_{sub_pct}.pkl'
     elif cfg.other_aug:
-        out_path = f'./data_humanact12/{cfg.dataset_name}_{sub_pct}_rotation.pkl'
+        out_path = f'./output/{cfg.dataset_name}_{sub_pct}_rotation.pkl'
     else:
         out_path = (
-            f'./data_humanact12/{cfg.dataset_name}_{sub_pct}'
+            f'./output/{cfg.dataset_name}_{sub_pct}'
             f'_aug_{drop_str}_renoise{cfg.renoise}_{NN}times.pkl'
         )
 
