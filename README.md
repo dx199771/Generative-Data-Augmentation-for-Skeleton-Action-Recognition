@@ -1,11 +1,10 @@
 # Generative Data Augmentation for Skeleton Action Recognition
 
-# Code is coming in 2 days. #
 
-**Accepted at 20th IEEE International Conference on Automatic Face and Gesture Recognition (IEEE FG’26) as Oral Presentation.**
+**Accepted at 20th IEEE International Conference on Automatic Face and Gesture Recognition (IEEE FG'26) as Oral Presentation.**
 
-[![Paper](https://img.shields.io/badge/Paper-IEEE%20FG%202026-blue)]([https://your-paper-link-here](https://arxiv.org/abs/2604.14933))
-[![Project Page](https://img.shields.io/badge/Page-ProjectPage-red)]([https://your-paper-link-here](https://andrewjohngilbert.github.io/SkelActRec/))
+[![Paper](https://img.shields.io/badge/Paper-IEEE%20FG%202026-blue)](https://arxiv.org/abs/2604.14933)
+[![Project Page](https://img.shields.io/badge/Page-ProjectPage-red)](https://andrewjohngilbert.github.io/SkelActRec/)
 
 ---
 
@@ -15,8 +14,6 @@ With only a small set of labelled skeleton sequences, the model generates divers
 
 ---
 
-
-
 ## 🔧 Installation
 
 Python 3.8+ and mmcv 1.7.1 are required.
@@ -24,7 +21,6 @@ Python 3.8+ and mmcv 1.7.1 are required.
 ```bash
 pip install torch torchvision
 pip install mmcv==1.7.1
-# pip install numpy tqdm timm
 pip install -r requirements.txt
 ```
 
@@ -34,18 +30,26 @@ pip install -r requirements.txt
 
 Download the datasets and place them under `data/`.
 
-| Dataset | Original Dataset | Our 263 Features|
+| Dataset | Original Dataset | Our 263 Features |
 |---|---|---|
-| HumanAct12 | [Download]() | [Download](https://drive.google.com/file/d/1wWcDZ4Assjx4Mlh4L0P8c2632QZTKupu/view?usp=sharing) |
-| Refined NTU RGB+D | [Download]() | [Download](https://drive.google.com/file/d/1xdQdNKa8voIUwKDqIALdXufOuIyF__N-/view?usp=sharing) |
+| HumanAct12 | [Download](https://ericguo5513.github.io/action-to-motion/#data) | [Download](https://drive.google.com/file/d/1wWcDZ4Assjx4Mlh4L0P8c2632QZTKupu/view?usp=sharing) |
+| Refined NTU RGB+D | [Download](https://ericguo5513.github.io/action-to-motion/#data) | [Download](https://drive.google.com/file/d/1xdQdNKa8voIUwKDqIALdXufOuIyF__N-/view?usp=sharing) |
 
 Expected structure:
 
 ```
 data/
 ├── humanact12/
-│   └── NTU60_XSub.npz
-└── vibe/
+│   ├── new_joint_vecs_humanact/
+│   ├── test_mean_std/
+│   ├── train_mean_std/
+│   ├── 48_test.pkl
+│   ├── 48_train.pkl
+│   └── humanact12_old_new_map.json
+└── ntuvibe/
+    ├── new_joint_vecs_vibe/
+    ├── vibe_48_new_test/
+    └── vibe_48_new_train/
 ```
 
 ---
@@ -54,26 +58,30 @@ data/
 
 ```bash
 # HumanAct12
-python3 main.py --config configs/humanact1222.py
+python3 main.py --config configs/cfg_humanact.py
 
 # NTU RGB+D Vibe
-python3 main.py --config configs/nturgbvibe.py
+python3 main.py --config configs/cfg_ntuvibe.py
 ```
 
-## Sampling
+---
 
-# clone MDM first to use its recover_from_ric function
+## 🎲 Sampling
+
+First clone MDM to use its `recover_from_ric` function:
+
 ```bash
 git clone https://github.com/GuyTevet/motion-diffusion-model.git
 ```
 
+Then run sampling:
+
 ```bash
 # HumanAct12
-python3 sample.py --config configs/cfg_humanact.py 
+python3 sample.py --config configs/cfg_humanact.py
 
 # NTU RGB+D Vibe
-python3 sample.py --config configs/cfg_nturgbvibe.py 
-
+python3 sample.py --config configs/cfg_ntuvibe.py
 ```
 
 ---
@@ -81,22 +89,37 @@ python3 sample.py --config configs/cfg_nturgbvibe.py
 ## 📁 Project Structure
 
 ```
-├── configs/           # experiment config files
-├── dataloaders/       # dataset loaders
-├── models/            # MDM model and diffusion
-│   ├── MDM.py
+├── configs/
+│   ├── cfg_humanact.py
+│   └── cfg_ntuvibe.py
+├── data/
+│   ├── humanact12/
+│   └── ntuvibe/
+├── dataloaders/
+│   ├── humanact12.py
+│   └── nturgbvibe.py
+├── models/
+│   ├── __init__.py
+│   ├── cgn.py
 │   ├── diffusion.py
+│   ├── losses.py
+│   ├── nn.py
 │   └── sampler.py
-├── utils/
-│   └── utils.py
-└── main.py
+├── .gitignore
+├── main.py
+├── README.md
+├── requirements.txt
+├── sample.py
+└── utils.py
 ```
 
 ---
 
-### Evaluation framework
-To evaluate our framework, the generated synthetic data is trained and tested across the three standard SOTA backbones provided by [PYSKL](https://github.com/kennymckormick/pyskl), and [BlockGCN](https://github.com/zhouyuxuanyx/blockgcn) implemented as an independent baseline.
+## 📊 Evaluation
 
+The generated synthetic data is trained and tested across three standard SOTA backbones provided by [PySkl](https://github.com/kennymckormick/pyskl), and [BlockGCN](https://github.com/zhouyuxuanyx/blockgcn) implemented as an independent baseline.
+
+---
 
 ## 📜 Citation
 
