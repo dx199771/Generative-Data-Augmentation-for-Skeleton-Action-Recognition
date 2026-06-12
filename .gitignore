@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*/__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Results and outputs
+results/
+evaluation/eval_results/
+
+# Model cache
+.cache/
+*.bin
+*.safetensors
+
+# Data
+*.jsonl
+*.json
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

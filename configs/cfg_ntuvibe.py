@@ -7,8 +7,10 @@ multi_gpu = "1"
 
 # --- Dataloader ---
 dataset_name = "nturgbd60_sub_vibe"
-motion_path = "../ntu_vibe"
-
+motion_base_path = "./data/ntuvibe"
+motion_path = "./data/ntuvibe/new_joint_vecs_vibe"
+train_stat = "./data/ntuvibe/vibe_48_new_train"
+test_stat = "./data/ntuvibe/vibe_48_new_test"
 batch_size = 128
 num_workers = 0
 
